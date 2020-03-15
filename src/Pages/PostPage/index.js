@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState, useReducer } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import PropTypes from 'prop-types'
 import { fetchData } from "../../Utility/Fetch"
@@ -39,25 +39,60 @@ const pageStyle = {
   }
 }
 
+const initialState = {
+  prevBtn: true,
+  nextBtn: false
+}
+const PostReducer = (state, action) => {
+  switch(action.type) {
+    case 'disablePrevious' :
+      return {
+        ...state,
+        prevBtn: true
+      }
+    case 'enablePrevious' :
+      return {
+        ...state,
+        prevBtn: false
+      }
+     case 'disableNext' :
+       return {
+         ...state,
+         nextBtn: true
+       }
+      case 'enableNext' :
+        return {
+          ...state,
+          nextBtn: false
+        }
+
+    default :
+      return state
+  }
+}
+
 const PostPage = (props) => {
   const { showLoadMore, showPagination, maxNumPost } = props
-  const dispatch = useDispatch()
+
+  const dispatcher = useDispatch()
+
   const inFlight = useSelector(state => state.postData.uiState.inFlight)
   const inSuccess = useSelector(state => state.postData.uiState.inSuccess)
   const inError = useSelector(state => state.postData.uiState.inError)
   const posts = useSelector(state => state.postData.response[0])
 
+  const [state, dispatch] = useReducer(PostReducer, initialState)
+  const {prevBtn, nextBtn} = state
+
   const [startNum, setStartNum] = useState(0)
   const [currentPage, setCurrentPage] = useState(1)
   const [endNum, setEndNum] = useState(maxNumPost)
-  const [prevBtn, setPrevBtn] = useState(true)
-  const [nextBtn, setNextBtn] = useState(false)
   const [startPage, setStartPage] = useState(0)
   const [endPage, setEndPage] = useState(maxNumPost)
 
   useEffect(() => {
-    dispatch(fetchData());
-  }, [dispatch]);
+    dispatcher(fetchData());
+  }, [dispatcher]);
 
   const loadMore = () => {
     // setStartNum(0); // load all on one page
@@ -77,15 +112,15 @@ const PostPage = (props) => {
 
   const disablePrevNextButton = (pageNumber, totalPages = 0) => {
     if(pageNumber === 1) {
-      setPrevBtn(true)
+      dispatch({type: 'disablePrevious'})
     } else {
-      setPrevBtn(false)
+      dispatch({type: 'enablePrevious'})
     }
     if((pageNumber === totalPages) || (pageNumber > totalPages)) {
-      setNextBtn(true)
+      dispatch({type: 'disableNext'})
     }
     if(totalPages === 0) {
-      setNextBtn(false)
+      dispatch({type: 'enableNext'})
     }
   }
 
