@@ -133,7 +133,8 @@ const PostPage = (props) => {
               <ul className="pagination" style={pageStyle.paginationStyle}>
                 <Pagination 
                   posts={posts} 
-                  maxNumber={maxNumPost} 
+                  maxNumber={maxNumPost}
+                  currentPage={currentPage}
                   clickHandler={pageClickHandler}
                   isPreviousButtonDisabled={prevBtn}
                   isNextButtonDisabled={nextBtn}
