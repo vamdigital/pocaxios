@@ -32,7 +32,7 @@ function App() {
         <Switch>
           <Route path="/" exact component={() => <HomePage/>}/>
           <Route path="/Counter"  exact component={() => <CounterPage/>}/>
-          <Route path="/Posts"  exact component={() => <PostPage />}/>
+          <Route path="/Posts"  exact component={() => <PostPage maxNumPost={8}/>}/>
         </Switch>
       </div>
     </div>
