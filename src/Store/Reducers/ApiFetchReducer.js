@@ -24,9 +24,9 @@ const APIFetchReducer = (state = initialState, action) => {
         uiState: {
           inFlight: false,
           inSuccess: true,
-          inErrro: false
+          inError: false
         },
-        response: action.payload
+        response: [action.payload]
       }
     case ERROR : 
       return {

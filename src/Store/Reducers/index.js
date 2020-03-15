@@ -4,7 +4,7 @@ import APIFetchReducer from './ApiFetchReducer'
 
 const RootReducer = combineReducers(
   { counter: CounterReducer,
-    data: APIFetchReducer
+    postData: APIFetchReducer
   }
 )
 

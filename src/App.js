@@ -5,6 +5,7 @@ import NavBar from "./Components/NavBar";
 
 import HomePage from './Pages/Home'
 import CounterPage from "./Pages/CounterPage";
+import PostPage from "./Pages/PostPage";
 
 const wrapperStyle = {
   marginTop: '40px'
@@ -12,7 +13,8 @@ const wrapperStyle = {
 
 const navItems = [
   { navText: "Home", navLink: "" },
-  { navText: "Counter", navLink: "Counter" }
+  { navText: "Counter", navLink: "Counter" },
+  { navText: "Posts", navLink: "Posts" },
 ];
 function App() {
   const [isHidden, setHidden] = useState(true);
@@ -30,6 +32,7 @@ function App() {
         <Switch>
           <Route path="/" exact component={() => <HomePage/>}/>
           <Route path="/Counter"  exact component={() => <CounterPage/>}/>
+          <Route path="/Posts"  exact component={() => <PostPage />}/>
         </Switch>
       </div>
     </div>
