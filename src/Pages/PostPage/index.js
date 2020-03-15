@@ -63,8 +63,6 @@ const PostPage = (props) => {
     // setStartNum(0); // load all on one page
     setStartNum(endNum); // load page by page
     setEndNum(endNum + maxNumPost);
-    console.log('startNum', startNum);
-    console.log('endNum', endNum);
   }
   const postList = (posts) => {
     return posts.slice(startNum, endNum).map(post => (
@@ -83,9 +81,10 @@ const PostPage = (props) => {
     } else {
       setPrevBtn(false)
     }
-    if(pageNumber === totalPages) {
+    if((pageNumber === totalPages) || (pageNumber > totalPages)) {
       setNextBtn(true)
-    } else {
+    }
+    if(totalPages === 0) {
       setNextBtn(false)
     }
   }
@@ -99,7 +98,6 @@ const PostPage = (props) => {
     setEndNum(maxNumber);
     setCurrentPage(pageNumber);
     disablePrevNextButton(pageNumber, totalPage)
-    console.log('pageNumber', pageNumber)
   }
 
   const nextClickHandler = (e) => {
@@ -110,9 +108,10 @@ const PostPage = (props) => {
     setStartNum(maxNumber - maxNumPost);
     setEndNum(maxNumber)
     disablePrevNextButton(currentPage + 1, totalPages)
-    if(currentPage === maxNumPost) {
+    
+    if(currentPage % maxNumPost === 0) {
       setStartPage(currentPage)
-      setEndPage(totalPages)
+      setEndPage(currentPage + maxNumPost)
     }
   }
   
@@ -123,14 +122,11 @@ const PostPage = (props) => {
     setStartNum(maxNumber - maxNumPost);
     setEndNum(maxNumber)
     disablePrevNextButton(currentPage-1)
-    console.log(currentPage)
-    if(currentPage - 1 === maxNumPost) {
-      setStartPage(0)
-      setEndPage(maxNumPost)
+    if((currentPage - 1) % maxNumPost === 0) {
+      setStartPage((currentPage - 1) - maxNumPost)
+      setEndPage(currentPage - 1)
     }
   }
-  
-  console.log(currentPage);
   return (
     <div className="postpage">
       <h1 className="display-2">Posts</h1>

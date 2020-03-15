@@ -31,7 +31,7 @@ const Pagination = (props) => {
   const {posts, startNum, endNum, maxNumber, currentPage, clickHandler, prevClickHandler, nextClickHandler, isPreviousButtonDisabled, isNextButtonDisabled} = props
   let i = 0;
   const arr = []
-  const totalPages = Math.round(posts.length / maxNumber)
+  const totalPages = posts.length / maxNumber
   for(i; i<totalPages; i++) arr.push(i + 1);
 
   return (
