@@ -3,6 +3,8 @@ import PropTypes from 'prop-types'
 
 const propTypes = {
   posts: PropTypes.arrayOf(PropTypes.shape([])),
+  startNum: PropTypes.number,
+  endNum: PropTypes.number,
   maxNumber: PropTypes.number,
   currentPage: PropTypes.number,
   clickHandler: PropTypes.func,
@@ -14,8 +16,10 @@ const propTypes = {
 
 const defaultProps = {
   posts: [],
-  maxNumber: 10,
+  startNum: 0,
+  endNum: 0,
   currentPage: 1,
+  maxNumber: 10,
   clickHandler: () => {},
   prevClickHandler: () => {},
   nextClickHandler: () => {},
@@ -24,7 +28,7 @@ const defaultProps = {
 }
 
 const Pagination = (props) => {
-  const {posts, maxNumber, currentPage, clickHandler, prevClickHandler, nextClickHandler, isPreviousButtonDisabled, isNextButtonDisabled} = props
+  const {posts, startNum, endNum, maxNumber, currentPage, clickHandler, prevClickHandler, nextClickHandler, isPreviousButtonDisabled, isNextButtonDisabled} = props
   let i = 0;
   const arr = []
   const totalPages = Math.round(posts.length / maxNumber)
@@ -36,17 +40,23 @@ const Pagination = (props) => {
         <button 
           className="page-link"
           disabled={isPreviousButtonDisabled} 
+          data-totalpage={totalPages} 
           onClick={prevClickHandler}>
             Previous
         </button>
       </li>
-      {arr.slice(0,maxNumber).map((a, index) => {
+      {arr.slice(startNum,endNum).map((a, index) => {
         return (
-        <li className={`page-item ${currentPage === index + 1 && "active"}`} key={a}><button className="page-link" data-page={a} data-totalpage={totalPages} onClick={clickHandler}>{a}</button></li>
+        <li className={`page-item ${currentPage === a  && "active"}`} key={a}><button className="page-link" data-page={a} data-totalpage={totalPages} onClick={clickHandler}>{a}</button></li>
         )
       })}
       <li className="page-item" key={i + 2}>
-        <button className="page-link" onClick={nextClickHandler} data-totalpage={totalPages} disabled={isNextButtonDisabled} >
+        <button 
+          className="page-link" 
+          onClick={nextClickHandler} 
+          data-totalpage={totalPages} 
+          disabled={isNextButtonDisabled} 
+        >
           Next
         </button>
       </li>

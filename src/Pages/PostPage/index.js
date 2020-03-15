@@ -52,6 +52,8 @@ const PostPage = (props) => {
   const [endNum, setEndNum] = useState(maxNumPost)
   const [prevBtn, setPrevBtn] = useState(true)
   const [nextBtn, setNextBtn] = useState(false)
+  const [startPage, setStartPage] = useState(0)
+  const [endPage, setEndPage] = useState(maxNumPost)
 
   useEffect(() => {
     dispatch(fetchData());
@@ -97,6 +99,7 @@ const PostPage = (props) => {
     setEndNum(maxNumber);
     setCurrentPage(pageNumber);
     disablePrevNextButton(pageNumber, totalPage)
+    console.log('pageNumber', pageNumber)
   }
 
   const nextClickHandler = (e) => {
@@ -107,8 +110,12 @@ const PostPage = (props) => {
     setStartNum(maxNumber - maxNumPost);
     setEndNum(maxNumber)
     disablePrevNextButton(currentPage + 1, totalPages)
+    if(currentPage === maxNumPost) {
+      setStartPage(currentPage)
+      setEndPage(totalPages)
+    }
   }
-
+  
   const prevClickHandler = (e) => {
     e.preventDefault();
     setCurrentPage(currentPage - 1)
@@ -116,8 +123,14 @@ const PostPage = (props) => {
     setStartNum(maxNumber - maxNumPost);
     setEndNum(maxNumber)
     disablePrevNextButton(currentPage-1)
+    console.log(currentPage)
+    if(currentPage - 1 === maxNumPost) {
+      setStartPage(0)
+      setEndPage(maxNumPost)
+    }
   }
-
+  
+  console.log(currentPage);
   return (
     <div className="postpage">
       <h1 className="display-2">Posts</h1>
@@ -133,6 +146,8 @@ const PostPage = (props) => {
               <ul className="pagination" style={pageStyle.paginationStyle}>
                 <Pagination 
                   posts={posts} 
+                  startNum={startPage}
+                  endNum={endPage}
                   maxNumber={maxNumPost}
                   currentPage={currentPage}
                   clickHandler={pageClickHandler}
